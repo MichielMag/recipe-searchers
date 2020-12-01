@@ -10,22 +10,22 @@ from .Food import Food
 from ._result import SearchResult
 from typing import List
 
-SEARCHERS = [
-    AllRecipes,
-    BBCCoUk,
-    BBCGoodFood,
-    BonAppetit,
-    TheWoksOfLife,
-    Food,
-    HostTheToast,
-    JamieOliver,
-    NyTimes
-]
+SEARCHERS = {
+    AllRecipes.host() : AllRecipes,
+    BBCCoUk.host() : BBCCoUk,
+    BBCGoodFood.host() : BBCGoodFood,
+    BonAppetit.host() : BonAppetit,
+    TheWoksOfLife.host() : TheWoksOfLife,
+    Food.host() : Food,
+    HostTheToast.host() : HostTheToast,
+    JamieOliver.host() : JamieOliver,
+    NyTimes.host() : NyTimes
+}
 
 def search_recipe(keyword : str) -> SearchResult:
     results : SearchResult = SearchResult(keyword)
     for searcher in SEARCHERS:
-        result = searcher().search(keyword)
+        result = SEARCHERS[searcher]().search(keyword)
         results = results.merge(result)
 
     return results

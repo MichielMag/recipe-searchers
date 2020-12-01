@@ -4,6 +4,7 @@ from typing import Dict, List
 import requests
 import urllib.parse
 from bs4 import BeautifulSoup as BS
+import tldextract
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7"
@@ -31,7 +32,8 @@ class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
         index = 1
         while(found):
             url = self.build_url(keyword, index)
-            recipes = SearchResult(keyword, {self.host() : self.fetch_results(url, keyword, index)})
+            site = tldextract.extract(url)
+            recipes = SearchResult(keyword, {site.domain : self.fetch_results(url, keyword, index)})
             if recipes.length > 0:
                 all_recipes = all_recipes.merge(recipes)
                 found = True
