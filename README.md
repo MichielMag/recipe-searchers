@@ -27,3 +27,6 @@ Where results is a pair of Website for every website it has found results and a 
 
 ## Searchers available for:
 - [allrecipes.com](https://allrecipes.com)
+- [bbc.co.uk](https://www.bbc.co.uk/food/)
+- [bbcgoodfooc.com](https://www.bbcgoodfood.com/)
+- [bonappetit.com](https://www.bonappetit.com/)
