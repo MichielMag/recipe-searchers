@@ -1,9 +1,11 @@
 from .AllRecipes import AllRecipes
+from .BBCCoUk import BBCCoUk
 from ._result import SearchResult
 from typing import List
 
 SEARCHERS = {
-    AllRecipes.host() : AllRecipes
+    AllRecipes.host() : AllRecipes,
+    BBCCoUk.host() : BBCCoUk
 }
 
 def search_recipe(keyword : str) -> SearchResult:

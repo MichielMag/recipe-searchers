@@ -46,3 +46,8 @@ class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
     def parse_results(self, soup) -> List[RecipeLink]:
         """ parse the results from a soup object """
         raise NotImplementedError("This should be implemented")
+
+    def parse_link(self, link : str) -> str:
+        if link.startswith("http") or link.startswith(self.host()):
+            return link
+        return self.host() + link
