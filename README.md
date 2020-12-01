@@ -3,7 +3,7 @@ A simple web scraping tool for searching for recipe links, inspired by (and poss
 
 ## To install
 ```
-pip install recipe-searchers
+pip install recipe_searchers
 ```
 
 ## To use
