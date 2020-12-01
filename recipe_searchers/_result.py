@@ -15,10 +15,12 @@ class SearchResult:
     keyword : str
     # str = website, List = results
     results : Dict[str, List[RecipeLink]] 
+    count : int
 
     def __init__(self, keyword : str, result : Dict[str, List[RecipeLink]] = {}):
         self.keyword = keyword
         self.results = result
+        self.count = self.length
     
     def merge(self, result : SearchResult) -> Dict[str, List[RecipeLink]]:
         """ A function that makes sure the SearchResults are immutable. This function makes a new SearchResult with both results merged. """
