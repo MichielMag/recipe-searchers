@@ -31,3 +31,4 @@ Where results is a pair of Website for every website it has found results and a 
 - [bbcgoodfooc.com](https://www.bbcgoodfood.com/)
 - [bonappetit.com](https://www.bonappetit.com/)
 - [food.com](https://www.food.com/)
+- [thewoksoflife.com](https://thewoksoflife.com/)
