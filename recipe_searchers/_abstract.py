@@ -6,8 +6,14 @@ import urllib.parse
 from bs4 import BeautifulSoup as BS
 
 class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
-    def __init__(self, website):
-        self.website = website
+
+    def __init__(self, **options):
+        self.options = options
+
+    @classmethod
+    def host(cls):
+        """ returns the host of the searcher """
+        raise NotImplementedError("This should be implemented")
     
     def build_url(self, keyword, index):
         """ builds the search url, so we can incrementally search pages """
@@ -15,12 +21,12 @@ class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
 
     def search(self, keyword) -> SearchResult:
         """ returns search results from the chosen website """
-        all_recipes : SearchResult = SearchResult(keyword, self.website, [])
+        all_recipes : SearchResult = SearchResult(keyword, {})
         found = True
         index = 1
         while(found):
             url = self.build_url(keyword, index)
-            recipes = SearchResult(keyword, self.website, self.fetch_results(url))
+            recipes = SearchResult(keyword, {self.host() : self.fetch_results(url)})
             if recipes.length > 0:
                 all_recipes = all_recipes.merge(recipes)
                 found = True

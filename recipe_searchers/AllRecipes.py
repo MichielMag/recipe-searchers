@@ -5,7 +5,11 @@ from typing import List
 
 class AllRecipes(AbstractSearcher):
     def __init__(self):
-        AbstractSearcher.__init__(self, "allrecipes.com")
+        AbstractSearcher.__init__(self)
+
+    @classmethod
+    def host(cls):
+        return "allrecipes.com"
     
     def build_url(self, keyword, index):
         query = urllib.parse.quote_plus(keyword)
@@ -17,5 +21,5 @@ class AllRecipes(AbstractSearcher):
         for recipe in recipes:
             link = recipe.find('a', class_='fixed-recipe-card__title-link').get('href')
             title = recipe.find('span', class_='fixed-recipe-card__title-link').string
-            results.append(RecipeLink(title, link, self.website))
+            results.append(RecipeLink(title, link, self.host()))
         return results
