@@ -1,14 +1,19 @@
 from ._exception_handling import ExceptionHandlingMetaclass
 from ._result import SearchResult, RecipeLink
 from typing import Dict, List
-from urllib.request import urlopen
+import requests
 import urllib.parse
 from bs4 import BeautifulSoup as BS
 
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7"
+}
+
+
 class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
 
-    def __init__(self, **options):
-        self.options = options
+    def __init__(self, timeout = None):
+        self.timeout = timeout
 
     @classmethod
     def host(cls):
@@ -26,7 +31,7 @@ class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
         index = 1
         while(found):
             url = self.build_url(keyword, index)
-            recipes = SearchResult(keyword, {self.host() : self.fetch_results(url)})
+            recipes = SearchResult(keyword, {self.host() : self.fetch_results(url, keyword, index)})
             if recipes.length > 0:
                 all_recipes = all_recipes.merge(recipes)
                 found = True
@@ -35,13 +40,18 @@ class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
                 found = False
         return all_recipes
 
-    def fetch_results(self, url) -> List[RecipeLink]:
+    def fetch_results(self, url, keyword = "", index = 1) -> List[RecipeLink]:
         """ returns all the search results from the chosen website """
-        page = urlopen(url)
-        html_bytes = page.read()
-        html = html_bytes.decode("utf-8")
-        soup = BS(html)
-        return self.parse_results(soup)
+        try:
+            page_data = requests.get(
+                url, headers=HEADERS, timeout=self.timeout
+            ).content
+            soup = BS(page_data, "html.parser")
+            return self.parse_results(soup)
+        except Exception as e:
+            print(f"Could not get any recipes from {url} because {type(e)}")
+        return []
+        
 
     def parse_results(self, soup) -> List[RecipeLink]:
         """ parse the results from a soup object """
