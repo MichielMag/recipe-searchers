@@ -13,7 +13,8 @@ class RecipeLink:
 @dataclass
 class SearchResult:
     keyword : str
-    results : Dict[str, List[RecipeLink]]
+    # str = website, List = results
+    results : Dict[str, List[RecipeLink]] 
 
     def __init__(self, keyword : str, result : Dict[str, List[RecipeLink]] = {}):
         self.keyword = keyword
