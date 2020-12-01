@@ -3,6 +3,9 @@ from .BBCCoUk import BBCCoUk
 from .BBCGoodFood import BBCGoodFood
 from .BonAppetit import BonAppetit
 from .TheWoksOfLife import TheWoksOfLife
+from .HostTheToast import HostTheToast
+from .JamieOliver import JamieOliver
+from .NyTimes import NyTimes
 from .Food import Food
 from ._result import SearchResult
 from typing import List
@@ -13,7 +16,10 @@ SEARCHERS = [
     BBCGoodFood,
     BonAppetit,
     TheWoksOfLife,
-    Food
+    Food,
+    HostTheToast,
+    JamieOliver,
+    NyTimes
 ]
 
 def search_recipe(keyword : str) -> SearchResult:
