@@ -1,4 +1,3 @@
-from ._exception_handling import ExceptionHandlingMetaclass
 from ._result import SearchResult, RecipeLink
 from typing import Dict, List
 import requests
@@ -11,7 +10,7 @@ HEADERS = {
 }
 
 
-class AbstractSearcher(metaclass=ExceptionHandlingMetaclass):
+class AbstractSearcher():
 
     def __init__(self, timeout = None):
         self.timeout = timeout
