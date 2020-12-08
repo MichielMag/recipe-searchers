@@ -5,6 +5,7 @@ import requests
 import json
 from typing import List
 
+
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7",
     "X-Requested-With": "XMLHttpRequest"
@@ -34,7 +35,6 @@ class JamieOliver(AbstractSearcher):
     def fetch_results(self, url, keyword = "", index = 1) -> List[RecipeLink]:
         """ returns all the search results from the chosen website """
         try:
-            print(f"Requesting url {url}")
             page_data = requests.get(
                 url, headers=HEADERS, timeout=self.timeout
             ).content
@@ -43,5 +43,5 @@ class JamieOliver(AbstractSearcher):
             
             return self.parse_results(json.loads(page_data))
         except Exception as e:
-            print(f"Could not get any recipes from {url} because {type(e)}")
+            pass
         return []

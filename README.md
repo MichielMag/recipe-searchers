@@ -28,7 +28,7 @@ Where results is a pair of Website for every website it has found results and a 
 ## Searchers available for:
 - [allrecipes.com](https://allrecipes.com) - Through scraping
 - [bbc.co.uk](https://www.bbc.co.uk/food/) - Through scraping
-- [bbcgoodfooc.com](https://www.bbcgoodfood.com/) - Through scraping
+- [bbcgoodfood.com](https://www.bbcgoodfood.com/) - Through scraping
 - [bonappetit.com](https://www.bonappetit.com/) - Through scraping
 - [food.com](https://www.food.com/) - Through REST API
 - [thewoksoflife.com](https://thewoksoflife.com/) - Through scraping

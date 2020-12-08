@@ -7,8 +7,9 @@ from .HostTheToast import HostTheToast
 from .JamieOliver import JamieOliver
 from .NyTimes import NyTimes
 from .Food import Food
-from ._result import SearchResult
+from ._result import SearchResult, RecipeLink
 from typing import List
+from ._logger import Logger
 
 SEARCHERS = {
     AllRecipes.host() : AllRecipes,
@@ -22,13 +23,30 @@ SEARCHERS = {
     NyTimes.host() : NyTimes
 }
 
-def search_recipe(keyword : str) -> SearchResult:
+available_searchers = list(SEARCHERS.keys())
+
+def search_recipe(keyword : str, 
+                  verbose : bool = False,
+                  limit_per_searcher : int = -1,
+                  limit_to_searchers : List[str] = []) -> SearchResult:
+    Logger.verbose = verbose
+
+    if limit_per_searcher > 0:
+        Logger.info(f'Going to search for {keyword}, limitting to {limit_per_searcher} searchers per searcher')
+    else:
+        Logger.info(f'Going to search for {keyword}')
+    
     results : SearchResult = SearchResult(keyword)
-    for searcher in SEARCHERS:
-        result = SEARCHERS[searcher]().search(keyword)
-        results = results.merge(result)
+
+    if len(limit_to_searchers) == 0:
+        limit_to_searchers = SEARCHERS.keys()
+
+    for searcher in limit_to_searchers:
+        if SEARCHERS[searcher] is not None:
+            result = SEARCHERS[searcher]().search(keyword, limit_per_searcher)
+            results = results.merge(result)
 
     return results
 
-__all__ = ["search_recipe"]
+__all__ = ["search_recipe", "available_searchers", "SearchResult", "RecipeLink"]
 name = "recipe_searchers"

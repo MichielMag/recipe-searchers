@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="recipe-searchers", # Replace with your own username
-    version="0.0.5",
-    author="Michiel Klaassen",
+    version="0.0.7",
+    author="Michiel K",
     author_email="michieL_m@live.nl",
     description="A webscraping package to search for recipes URL's",
     long_description=long_description,

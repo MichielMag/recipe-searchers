@@ -4,6 +4,7 @@ import requests
 import urllib.parse
 from bs4 import BeautifulSoup as BS
 import tldextract
+from ._logger import Logger
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.7) Gecko/2009021910 Firefox/3.0.7"
@@ -24,8 +25,9 @@ class AbstractSearcher():
         """ builds the search url, so we can incrementally search pages """
         raise NotImplementedError("This should be implemented")
 
-    def search(self, keyword) -> SearchResult:
+    def search(self, keyword, limit_per_searcher = -1) -> SearchResult:
         """ returns search results from the chosen website """
+        Logger.info(f'Searching {self.host()} for {keyword}')
         all_recipes : SearchResult = SearchResult(keyword, {})
         found = True
         index = 1
@@ -33,12 +35,19 @@ class AbstractSearcher():
             url = self.build_url(keyword, index)
             site = tldextract.extract(url)
             recipes = SearchResult(keyword, {site.domain : self.fetch_results(url, keyword, index)})
+
             if recipes.length > 0:
                 all_recipes = all_recipes.merge(recipes)
-                found = True
+
+                if limit_per_searcher > 0 and all_recipes.length >= limit_per_searcher:
+                    found = False
+                else:
+                    found = True
+
                 index = index + 1
             else:
                 found = False
+
         return all_recipes
 
     def fetch_results(self, url, keyword = "", index = 1) -> List[RecipeLink]:
@@ -50,7 +59,7 @@ class AbstractSearcher():
             soup = BS(page_data, "html.parser")
             return self.parse_results(soup)
         except Exception as e:
-            print(f"Could not get any recipes from {url} because {type(e)}")
+            Logger.error(f"Could not get any recipes from {url} because {type(e)}")
         return []
         
 
