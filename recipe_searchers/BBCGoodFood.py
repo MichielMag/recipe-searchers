@@ -16,6 +16,7 @@ class BBCGoodFood(AbstractSearcher):
         return f'https://www.bbcgoodfood.com/search/recipes/page/{index}/?q={query}&sort=-relevance'
         
     def parse_results(self, soup) -> List[RecipeLink]:
+        # Simple HTML lookups.
         recipes = soup.find_all('div', class_='standard-card-new')
         results : List[RecipeLink] = []
         for recipe in recipes:

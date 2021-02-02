@@ -16,6 +16,7 @@ class BonAppetit(AbstractSearcher):
         return f'https://www.bonappetit.com/search/{query}?page={index}'
         
     def parse_results(self, soup) -> List[RecipeLink]:
+        # Simple HTML lookups.
         recipes = soup.find_all('article', class_='recipe-content-card')
         results : List[RecipeLink] = []
         for recipe in recipes:

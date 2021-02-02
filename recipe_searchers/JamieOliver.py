@@ -25,6 +25,8 @@ class JamieOliver(AbstractSearcher):
         return f'https://www.jamieoliver.com/search/query?s={query}&type=recipe&start={start}'
         
     def parse_results(self, obj) -> List[RecipeLink]:
+        # No HTML this time, we have to process some json
+        # that comes in the form of a dictionary.
         results : List[RecipeLink] = []
 
         for result in obj['search']:
@@ -34,13 +36,13 @@ class JamieOliver(AbstractSearcher):
     
     def fetch_results(self, url, keyword = "", index = 1) -> List[RecipeLink]:
         """ returns all the search results from the chosen website """
+        # This website doesn't use a webpage, but we can actually use it's 
+        # underlying REST API, so we have to override the fetch_results method.
         try:
             page_data = requests.get(
                 url, headers=HEADERS, timeout=self.timeout
             ).content
 
-            #print(page_data)
-            
             return self.parse_results(json.loads(page_data))
         except Exception as e:
             pass

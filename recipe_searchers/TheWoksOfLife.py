@@ -16,6 +16,7 @@ class TheWoksOfLife(AbstractSearcher):
         return f'https://thewoksoflife.com/page/{query}/?s={index}'
         
     def parse_results(self, soup) -> List[RecipeLink]:
+        # Simple HTML lookups.
         recipes = soup.find_all('article', class_='category-recipes')
         results : List[RecipeLink] = []
         for recipe in recipes:

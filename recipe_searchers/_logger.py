@@ -1,5 +1,5 @@
 class Logger:
-
+    """ Simple class that can be turned off or on with its verbose property """
     verbose : bool = False
 
     @classmethod

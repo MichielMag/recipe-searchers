@@ -29,6 +29,7 @@ def search_recipe(keyword : str,
                   verbose : bool = False,
                   limit_per_searcher : int = -1,
                   limit_to_searchers : List[str] = []) -> SearchResult:
+    # We're using Logger as a static class.
     Logger.verbose = verbose
 
     if limit_per_searcher > 0:
@@ -41,6 +42,7 @@ def search_recipe(keyword : str,
     if len(limit_to_searchers) == 0:
         limit_to_searchers = SEARCHERS.keys()
 
+    # Call search for every searcher and merge each result.
     for searcher in limit_to_searchers:
         if SEARCHERS[searcher] is not None:
             result = SEARCHERS[searcher]().search(keyword, limit_per_searcher)

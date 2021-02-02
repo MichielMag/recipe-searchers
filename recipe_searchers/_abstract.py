@@ -33,12 +33,16 @@ class AbstractSearcher():
         index = 1
         while(found):
             url = self.build_url(keyword, index)
+
+            # Use tldextract to extra just the domain
             site = tldextract.extract(url)
+
+            # Make a new SearchResult with the result of the method fetch_results as parameter.
             recipes = SearchResult(keyword, {site.domain : self.fetch_results(url, keyword, index)})
 
+            # If we found recipes, merge them with what we previously found.
             if recipes.length > 0:
                 all_recipes = all_recipes.merge(recipes)
-
                 if limit_per_searcher > 0 and all_recipes.length >= limit_per_searcher:
                     found = False
                 else:
@@ -53,10 +57,15 @@ class AbstractSearcher():
     def fetch_results(self, url, keyword = "", index = 1) -> List[RecipeLink]:
         """ returns all the search results from the chosen website """
         try:
+            # Fetching the page and passing it to Beautiful soup should be the
+            # same for every searcher. Otherwise this function can be overridden
+            # as well.
             page_data = requests.get(
                 url, headers=HEADERS, timeout=self.timeout
             ).content
             soup = BS(page_data, "html.parser")
+
+            # Parsing, which has an own implementation per searcher.
             return self.parse_results(soup)
         except Exception as e:
             Logger.error(f"Could not get any recipes from {url} because {type(e)}")

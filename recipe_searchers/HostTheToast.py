@@ -16,6 +16,7 @@ class HostTheToast(AbstractSearcher):
         return f'https://hostthetoast.com/page/{index}/?s={query}&searchsubmit=GO'
         
     def parse_results(self, soup) -> List[RecipeLink]:
+        # Simple HTML lookups.
         recipes = soup.find_all('article', class_='post')
         results : List[RecipeLink] = []
         for recipe in recipes:

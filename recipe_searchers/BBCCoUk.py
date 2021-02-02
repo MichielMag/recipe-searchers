@@ -16,6 +16,7 @@ class BBCCoUk(AbstractSearcher):
         return f'https://www.bbc.co.uk/food/search?q={query}&page={index}'
         
     def parse_results(self, soup) -> List[RecipeLink]:
+        # Simple HTML lookups.
         recipes = soup.find_all('a', class_='promo')
         results : List[RecipeLink] = []
         for recipe in recipes:
